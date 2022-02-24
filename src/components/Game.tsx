@@ -19,10 +19,13 @@ type Props = {
 
 export default function Game({ reSpin, setShowStats }: Props) {
   // Get data from local storage
-  const [storedGuesses, storeGuesses] = useLocalStorage<Guesses>("guesses", {
-    day: today,
+  const [storedGuesses, storeGuesses] = useState<{countries: string[]}>({
     countries: [],
   });
+  // const [storedGuesses, storeGuesses] = useLocalStorage<Guesses>("guesses", {
+  //   day: today,
+  //   countries: [],
+  // });
 
   const firstStats = {
     gamesWon: 0,
@@ -40,7 +43,7 @@ export default function Game({ reSpin, setShowStats }: Props) {
   // If it's a new day though, start with a blank slate
   let storedCountryNames: string[] = [];
   let storedCountries: Country[] = [];
-  if (today <= storedGuesses.day) {
+  // if (today <= storedGuesses.day) {
     storedCountryNames = storedGuesses.countries;
     storedCountries = storedCountryNames.map((guess) => {
       const foundCountry = countryData.find((country) => {
@@ -50,7 +53,7 @@ export default function Game({ reSpin, setShowStats }: Props) {
       foundCountry["proximity"] = polygonDistance(foundCountry, answerCountry);
       return foundCountry;
     });
-  }
+  // }
   // Check if win condition already met
   const alreadyWon = storedCountryNames.includes(answerName);
 
@@ -63,7 +66,7 @@ export default function Game({ reSpin, setShowStats }: Props) {
   useEffect(() => {
     const guessNames = guesses.map((country) => country.properties.NAME);
     storeGuesses({
-      day: today,
+      // day: today,
       countries: guessNames,
     });
   }, [guesses, storeGuesses]);
